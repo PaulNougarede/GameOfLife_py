@@ -1,0 +1,16 @@
+# depslib dependency file v1.0
+1675245870 source:c:\users\master\onedrive\bureau\work\snake\gamelife\main.c
+	"header.h"
+
+1674817896 c:\users\master\onedrive\bureau\work\snake\gamelife\header.h
+	<stdio.h>
+	<stdlib.h>
+	<time.h>
+	<allegro.h>
+
+1675353349 source:c:\users\master\onedrive\bureau\work\snake\gamelife\ssprg.c
+	"header.h"
+
+1675245856 source:c:\users\master\onedrive\bureau\work\snake\gamelife\display.c
+	"header.h"
+
