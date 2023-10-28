@@ -1,5 +1,6 @@
 import numpy as np
 import pygame
+import matplotlib.pyplot as plt
 
 # Dimensions du plateau
 width, height = 800, 800
@@ -24,12 +25,21 @@ black = (0, 0, 0)
 cell_width = width // cols
 cell_height = height // rows
 
+# Tableaux de Cellules vivantes et Itérations
+alives = []
+ite = 0
+
 
 # Fonction pour afficher le plateau
 def display_plate(plate):
+    count = 0
     for row in range(rows):
         for col in range(cols):
-            color = white if plate[row, col] == 1 else black
+            if plate[row, col] == 1:
+                color = white
+                count += 1
+            else:
+                color = black
             pygame.draw.rect(
                 screen,
                 color,
@@ -47,6 +57,9 @@ running = True
 clock = pygame.time.Clock()
 
 while running:
+    count_alive = 0
+    ite += 1
+
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
@@ -72,11 +85,14 @@ while running:
             )
 
             if plate[row, col] == 1:
+                count_alive += 1
                 if count < 2 or count > 3:
                     new_plate[row, col] = 0
             else:
                 if count == 3:
                     new_plate[row, col] = 1
+
+    alives.append(count_alive)
 
     # Mettez à jour le plateau
     plate = new_plate
@@ -85,3 +101,12 @@ while running:
 
 # Quittez Pygame
 pygame.quit()
+
+print(alives)
+
+# Afficher le graphe de cellules vivantes en focntion du temps
+plt.plot(alives)
+plt.xlabel("Iteration")
+plt.ylabel("Cells")
+plt.title("Cells alive")
+plt.show()
