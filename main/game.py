@@ -8,7 +8,7 @@ import pygame
 # speed = vitesse du jeu
 
 
-def game(width, height, rows, cols, speed):
+def game(width, height, rows, cols, speed, rule_choice):
     # Dimensions du plateau
     width, height = width, height
 
