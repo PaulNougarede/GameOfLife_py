@@ -1,3 +1,5 @@
+import pygame
+from pygame.locals import *
 import game as Game
 import graphs.graphAlive as Graph
 import menu as Menu
@@ -9,8 +11,13 @@ speed = 10
 start_game = False
 rule_choice = 0
 
-start_game = PageAccueil.pageAccueil()
+pygame.init()
+
+screen = pygame.display.set_mode((1400, 800))
+pygame.display.set_caption("Jeu de la Vie - Imad Victor Paul Vinciane")
+
+start_game = PageAccueil.pageAccueil(screen)
 if start_game:
-    rule_choice = Menu.menu()
+    rule_choice = Menu.menu(screen)
     alive = Game.game(width, height, rows, cols, speed, rule_choice)
     Graph.graph_alive(alive)
