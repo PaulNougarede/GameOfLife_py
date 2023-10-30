@@ -1,16 +1,9 @@
 import pygame, sys, time
 from pygame.locals import *
 
-def pageAccueil():
-
-    pygame.init() #initialisation de la bibli pygame
-
-    horloge = pygame.time.Clock()
-    screen = pygame.display.set_mode((1400, 800)) #creer la fenetre
-    pygame.display.set_caption("Jeu de la Vie - Imad Victor Paul Vinciane")
+def pageAccueil(screen):
 
     vert = (0,122,123)
-    
     jeu = False
 
     #screen.fill(vert)#couleur fond
