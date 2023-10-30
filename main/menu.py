@@ -1,14 +1,8 @@
 import pygame, sys, time
 from pygame.locals import *
 
-def principeDuJeu():
+def principeDuJeu(screen):
     
-    pygame.init() #initialisation de la bibli pygame
-
-    horloge = pygame.time.Clock()
-    screen = pygame.display.set_mode((1400, 800)) #creer la fenetre
-    pygame.display.set_caption("Jeu de la Vie - Imad Victor Paul Vinciane")
-
     vert = (0,122,123)
     
     screen.fill(vert) #couleur fond
@@ -46,15 +40,10 @@ def principeDuJeu():
         mouse_x, mouse_y = pygame.mouse.get_pos() #coordonnées de la souris
         if 50 <= mouse_x <= 50 + iconeRetour.get_width() and 50 <= mouse_y <= 50 + iconeRetour.get_height(): #si la souris est sur l'icône
             if pygame.mouse.get_pressed()[0]: #si clic
-                menu()
+                menu(screen)
         
-def choixDesRegles():
-    pygame.init() #initialisation de la bibli pygame
-
-    horloge = pygame.time.Clock()
-    screen = pygame.display.set_mode((1400, 800)) #creer la fenetre
-    pygame.display.set_caption("Jeu de la Vie - Imad Victor Paul Vinciane")
-
+def choixDesRegles(screen):
+    
     vert = (0,122,123)
     rule_choice = 0
     
@@ -101,7 +90,7 @@ def choixDesRegles():
         mouse_x, mouse_y = pygame.mouse.get_pos() #coordonnées de la souris
         if 50 <= mouse_x <= 50 + iconeRetour.get_width() and 50 <= mouse_y <= 50 + iconeRetour.get_height(): #si la souris est sur l'icône
             if pygame.mouse.get_pressed()[0]: #si clic
-                menu()
+                menu(screen)
         pygame.display.flip()
         
         if bouton_regles1.collidepoint(pygame.mouse.get_pos()):#si souris sur le bouton
@@ -126,15 +115,9 @@ def choixDesRegles():
                         time.sleep(0.2)
                         rule_choice = 2
 
-def menu():
-    pygame.init() #initialisation de la bibli pygame
-
-    horloge = pygame.time.Clock()
-    screen = pygame.display.set_mode((1400, 800)) #creer la fenetre
-    pygame.display.set_caption("Jeu de la Vie - Imad Victor Paul Vinciane")
-
-    vert = (0,122,123)
+def menu(screen):
     
+    vert = (0,122,123)
     screen.fill(vert) #couleur fond
 
     def draw_text(text, font, color, x, y):
@@ -168,7 +151,7 @@ def menu():
                         draw_text("Principe du jeu", pygame.font.SysFont("Futura", 80), (255, 255, 255), 500, 275)
                         pygame.display.flip()
                         time.sleep(0.2)
-                        principeDuJeu()
+                        principeDuJeu(screen)
                         
         if bouton_choixRegles.collidepoint(pygame.mouse.get_pos()):#si souris sur le bouton
                 if pygame.mouse.get_pressed()[0]:#si clic                    
@@ -176,4 +159,4 @@ def menu():
                         draw_text("Choix des règles", pygame.font.SysFont("Futura", 80), (255, 255, 255), 475, 475)
                         pygame.display.flip()
                         time.sleep(0.2)  
-                        choixDesRegles()
+                        choixDesRegles(screen)
