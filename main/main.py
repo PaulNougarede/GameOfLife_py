@@ -7,7 +7,7 @@ import pageAccueil as PageAccueil
 
 width, height = 800, 800
 rows, cols = 100, 100
-speed = 10
+speed = 5
 start_game = False
 rule_choice = 0
 

@@ -31,16 +31,14 @@ def game(width, height, rows, cols, speed, rule_choice):
 
     # Tableaux de Cellules vivantes et Itérations
     alives = []
-    ite = 0
+    pause = False
 
     # Fonction pour afficher le plateau
     def display_plate(plate):
-        count = 0
         for row in range(rows):
             for col in range(cols):
                 if plate[row, col] == 1:
                     color = white
-                    count += 1
                 else:
                     color = black
                 pygame.draw.rect(
@@ -59,11 +57,11 @@ def game(width, height, rows, cols, speed, rule_choice):
 
     while running:
         count_alive = 0
-        ite += 1
 
         rows, cols = rows, cols
         cell_width = width // cols
         cell_height = height // rows
+        center = rows // 2
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -77,6 +75,10 @@ def game(width, height, rows, cols, speed, rule_choice):
                         rows, cols = int(rows * 2), int(cols * 2)
                 elif event.key == pygame.K_SPACE:
                     rows, cols = initialRows, initialCols
+                elif event.key == pygame.K_p and not pause:
+                    pause = True
+                elif event.key == pygame.K_s and pause:
+                    pause = False
 
         # Vérifie si un bouton de la souris est enfoncé
         button = pygame.mouse.get_pressed()
@@ -88,32 +90,33 @@ def game(width, height, rows, cols, speed, rule_choice):
         display_plate(plate)
         pygame.display.flip()
 
-        new_plate = plate.copy()
+        if not pause:
+            new_plate = plate.copy()
 
-        for row in range(rows):
-            for col in range(cols):
-                count = (
-                    get_cell(row - 1, col - 1)
-                    + get_cell(row - 1, col)
-                    + get_cell(row - 1, col + 1)
-                    + get_cell(row, col - 1)
-                    + get_cell(row, col + 1)
-                    + get_cell(row + 1, col - 1)
-                    + get_cell(row + 1, col)
-                    + get_cell(row + 1, col + 1)
-                )
+            for row in range(rows):
+                for col in range(cols):
+                    count = (
+                        get_cell(row - 1, col - 1)
+                        + get_cell(row - 1, col)
+                        + get_cell(row - 1, col + 1)
+                        + get_cell(row, col - 1)
+                        + get_cell(row, col + 1)
+                        + get_cell(row + 1, col - 1)
+                        + get_cell(row + 1, col)
+                        + get_cell(row + 1, col + 1)
+                    )
 
-                if plate[row, col] == 1:
-                    count_alive += 1
-                    if count < 2 or count > 3:
-                        new_plate[row, col] = 0
-                else:
-                    if count == 3:
-                        new_plate[row, col] = 1
+                    if plate[row, col] == 1:
+                        count_alive += 1
+                        if count < 2 or count > 3:
+                            new_plate[row, col] = 0
+                    else:
+                        if count == 3:
+                            new_plate[row, col] = 1
 
-        alives.append(count_alive)
+            alives.append(count_alive)
 
-        plate = new_plate
+            plate = new_plate
 
         clock.tick(speed)  # Ajustez la vitesse d'itération
 
