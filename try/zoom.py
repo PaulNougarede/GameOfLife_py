@@ -1,19 +1,10 @@
 import numpy as np
 import pygame
-import function.click as click
-
-
-# Fonction de jeu
-# width, height = taille de la fenètre
-# rows, cols = taille de la grille
-# speed = vitesse du jeu
+import main.menu as Menu
 
 
 def game(width, height, rows, cols, speed, rule_choice):
-    # Dimensions du plateau
-    # width, height = width, height
-
-    # Dimensions de la grille
+    # Dimensions de la grille de jeau
     initialRows, initialCols = rows, cols
 
     plate = np.random.choice([0, 1], size=(rows, cols))
@@ -28,13 +19,15 @@ def game(width, height, rows, cols, speed, rule_choice):
     # Tailles de cellule
     cell_width = width // cols
     cell_height = height // rows
+    print("size of X : ", cell_width, "size of Y : ", cell_height)
+    print("size2 of X : ", width // cols, "size2 of Y : ", height // rows)
 
     # Tableaux de Cellules vivantes et Itérations
     alives = []
     ite = 0
 
     # Fonction pour afficher le plateau
-    def display_plate(plate):
+    def display_plate(plate, cell_width, cell_height):
         count = 0
         for row in range(rows):
             for col in range(cols):
@@ -43,6 +36,7 @@ def game(width, height, rows, cols, speed, rule_choice):
                     count += 1
                 else:
                     color = black
+                # pygame.draw.rect(screen,color,(col * cell_width, row * cell_height, cell_width, cell_height))
                 pygame.draw.rect(
                     screen,
                     color,
@@ -52,6 +46,30 @@ def game(width, height, rows, cols, speed, rule_choice):
     # Fonction pour obtenir l'état d'une cellule avec des bords toriques
     def get_cell(x, y):
         return plate[x % rows, y % cols]
+
+    def cliqueCase(plate, screen, black, clickX, clickY):
+        turn = 0
+        while clickX > cell_width:
+            turn += 1
+            clickX = clickX - cell_width
+
+        placeX = turn * cell_width
+        turn = 0
+
+        while clickY > cell_height:
+            turn += 1
+            clickY = clickY - cell_height
+
+        placeY = turn * cell_height
+
+        plate[int(placeX / cell_width)][int(placeY / cell_height)] = 1
+        pygame.draw.rect(screen, black, (placeX, placeY, cell_width, cell_height))
+        print(
+            "X TABLE : ",
+            int(placeX / cell_width),
+            "AND Y TABLE : ",
+            int(placeY / cell_height),
+        )
 
     # Boucle principale
     running = True
@@ -82,10 +100,19 @@ def game(width, height, rows, cols, speed, rule_choice):
         button = pygame.mouse.get_pressed()
         if button[0]:  # 0 :bouton gauche
             clickX, clickY = event.pos
-            click.cliqueCase(plate, clickX, clickY, cell_width, cell_height)
+            print("Clique droit enfoncé X:", clickX, "Y:", clickY)
+            cliqueCase(plate, screen, white, clickX, clickY)
             pygame.display.flip()
 
-        display_plate(plate)
+        display_plate(plate, cell_width, cell_height)
+        Menu.draw_text(
+            screen,
+            f"{rows}*{cols}",
+            pygame.font.SysFont("Futura", 20),
+            (255, 0, 0),
+            0,
+            0,
+        )
         pygame.display.flip()
 
         new_plate = plate.copy()
