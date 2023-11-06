@@ -5,7 +5,7 @@ import graphs.graphAlive as Graph
 import menu as Menu
 import pageAccueil as PageAccueil
 
-width, height = 800, 800
+width, height = 1400, 800
 rows, cols = 100, 100
 speed = 5
 start_game = False
@@ -13,7 +13,7 @@ rule_choice = 0
 
 pygame.init()
 
-screen = pygame.display.set_mode((1400, 800))
+screen = pygame.display.set_mode((width, height))
 pygame.display.set_caption("Jeu de la Vie - Imad Victor Paul Vinciane")
 
 start_game = PageAccueil.pageAccueil(screen)
