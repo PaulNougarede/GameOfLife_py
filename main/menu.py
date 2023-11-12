@@ -173,7 +173,7 @@ def menu(screen):
                 )  # affichage bouton
                 draw_text("Choix des règles",pygame.font.SysFont("Futura", 80),(255, 255, 255),475,475,screen)
                 pygame.display.flip()
-                time.sleep(0.05)
+                time.sleep(0.2)
                 rules = choixDesRegles(screen)
                 if rules != 0:
                     return rules

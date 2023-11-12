@@ -3,6 +3,7 @@ import pygame
 from pygame.locals import *
 import function.click as click
 import sys
+import menu as Menu
 
 
 def game(width, height, rows, cols, speed, rule_choice):
@@ -56,7 +57,7 @@ def game(width, height, rows, cols, speed, rule_choice):
                     color = black
                 pygame.draw.rect(screen,color,(row * cell_width, col * cell_height, cell_width, cell_height),)
 
-    def drawPlate(screen):
+    def drawPlate(screen, alives):
         pygame.draw.rect(screen, (0, 0, 0), (0, 0, 1400, 800))
         screen.blit(iconePause1, (1150, 20))
         screen.blit(iconeStop, (1230, 23))
@@ -64,6 +65,13 @@ def game(width, height, rows, cols, speed, rule_choice):
         screen.blit(iconeZoomArriere, (1170, 700))
         screen.blit(iconeZoomAvant, (1270, 700))
         pygame.draw.rect(screen, (191, 191, 191), (1150, 100, 200, 550))  # cadre gris pour les infos de jeu
+        font=pygame.font.SysFont("Futura", 30)
+        texte = font.render("Cellule en vie :", True, (255,255,255))
+        screen.blit(texte, (1160,130))
+        if alives :
+            nbr_cellule = str(alives[-1])
+            affichage_nbr_cellule = font.render(nbr_cellule, True, (9,120,0))
+            screen.blit(affichage_nbr_cellule, (1190,150))
 
     # Fonction pour obtenir l'état d'une cellule avec des bords toriques
     def get_cell(x, y):
@@ -106,7 +114,7 @@ def game(width, height, rows, cols, speed, rule_choice):
                     else:
                         click.cliqueCase(plate, mouse_x, mouse_y, cell_width, cell_height)
 
-        drawPlate(screen)
+        drawPlate(screen, alives)
         displayPlate(plate)
         pygame.display.flip()
 
