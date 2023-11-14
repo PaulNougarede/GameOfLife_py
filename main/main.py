@@ -18,6 +18,6 @@ pygame.display.set_caption("Jeu de la Vie - Imad Victor Paul Vinciane")
 
 start_game = PageAccueil.pageAccueil(screen)
 if start_game:
-    rule_choice = Menu.menu(screen)
-    alive = Game.game(width, height, rows, cols, speed, rule_choice)
+    info = Menu.menu(screen) #info[0] : rules_choice / info[1] = plate / info[2] = nbr_tour
+    alive = Game.game(width, height, rows, cols, speed, info[0], info[1], info[2])
     Graph.graph_alive(alive)
