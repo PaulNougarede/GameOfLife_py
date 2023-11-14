@@ -1,5 +1,6 @@
 import pygame, sys, time
 from pygame.locals import *
+import save as Save
 
 def draw_text(text, font, color, x, y, screen):
         img = font.render(text, True, color)
@@ -129,6 +130,7 @@ def choixDesRegles(screen):
 
 def menu(screen):
 
+    plate = []
     running = True
 
     while running:  # boucle infinie
@@ -144,11 +146,14 @@ def menu(screen):
                     pygame.quit()
                     sys.exit()
 
-        bouton_principeDuJeu = pygame.draw.rect(screen, (255, 255, 255), (430, 250, 550, 100))  # affichage bouton
-        draw_text("Principe du jeu", pygame.font.SysFont("Futura", 80), vert, 500, 275, screen)
+        bouton_principeDuJeu = pygame.draw.rect(screen, (255, 255, 255), (430, 150, 550, 100))  # affichage bouton
+        draw_text("Principe du jeu", pygame.font.SysFont("Futura", 80), vert, 500, 175, screen)
 
-        bouton_choixRegles = pygame.draw.rect(screen, (255, 255, 255), (430, 450, 550, 100))  # affichage bouton
-        draw_text("Choix des règles", pygame.font.SysFont("Futura", 80), vert, 475, 475, screen)
+        bouton_nvlPartie = pygame.draw.rect(screen, (255, 255, 255), (430, 350, 550, 100))  # affichage bouton
+        draw_text("Nouvelle partie", pygame.font.SysFont("Futura", 80), vert, 495, 375, screen)
+
+        bouton_ChargerPartie = pygame.draw.rect(screen, (255, 255, 255), (430, 550, 550, 100))  # affichage bouton
+        draw_text("Charger une partie", pygame.font.SysFont("Futura", 80), vert, 450, 575, screen)
 
         pygame.display.flip()
 
@@ -157,23 +162,39 @@ def menu(screen):
         ):  # si souris sur le bouton
             if pygame.mouse.get_pressed()[0]:  # si clic
                 bouton_principeDuJeu = pygame.draw.rect(
-                    screen, vert, (430, 250, 550, 100)
+                    screen, vert, (430, 150, 550, 100)
                 )  # affichage bouton
-                draw_text("Principe du jeu",pygame.font.SysFont("Futura", 80),(255, 255, 255),500,275,screen)
+                draw_text("Principe du jeu",pygame.font.SysFont("Futura", 80),(255, 255, 255),500,175,screen)
                 pygame.display.flip()
                 time.sleep(0.05)
                 principeDuJeu(screen)
 
-        if bouton_choixRegles.collidepoint(
+        if bouton_nvlPartie.collidepoint(
             pygame.mouse.get_pos()
         ):  # si souris sur le bouton
             if pygame.mouse.get_pressed()[0]:  # si clic
-                bouton_choixRegles = pygame.draw.rect(
-                    screen, vert, (430, 450, 550, 100)
+                bouton_nvlPartie = pygame.draw.rect(
+                    screen, vert, (430, 350, 550, 100)
                 )  # affichage bouton
-                draw_text("Choix des règles",pygame.font.SysFont("Futura", 80),(255, 255, 255),475,475,screen)
+                draw_text("Nouvelle partie",pygame.font.SysFont("Futura", 80),(255, 255, 255),495,375,screen)
                 pygame.display.flip()
                 time.sleep(0.2)
                 rules = choixDesRegles(screen)
                 if rules != 0:
-                    return rules
+                    return (rules, plate, 0)
+                
+        if bouton_ChargerPartie.collidepoint(
+            pygame.mouse.get_pos()
+        ): # si souris sur le bouton
+            if pygame.mouse.get_pressed()[0]: #si clc
+                bouton_ChargerPartie = pygame.draw.rect(screen, vert, (430,550,550,100))
+                draw_text("Charger une partie",pygame.font.SysFont("Futura", 80),(255, 255, 255),450,575,screen)
+                pygame.display.flip()
+                time.sleep(0.2)
+                tuple_info = Save.charge_plate()
+
+                plate = tuple_info[0]
+                nbr_tour = tuple_info[1]
+                rules = tuple_info[2]
+
+                return (rules, plate, nbr_tour)
