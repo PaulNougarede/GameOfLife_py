@@ -19,5 +19,8 @@ pygame.display.set_caption("Jeu de la Vie - Imad Victor Paul Vinciane")
 start_game = PageAccueil.pageAccueil(screen)
 if start_game:
     info = Menu.menu(screen) #info[0] : rules_choice / info[1] = plate / info[2] = nbr_tour
-    alive = Game.game(width, height, rows, cols, speed, info[0], info[1], info[2])
-    Graph.graph_alive(alive)
+    graphData = Game.game(width, height, rows, cols, speed, info[0], info[1], info[2])
+    pygame.quit()
+    Graph.graph_alive(graphData[0]) #grapheData[0] = alives / [1] = calculTime / [2] = dead
+    Graph.graph_death(graphData[2]) #grapheData[0] = alives / [1] = calculTime / [2] = dead
+    Graph.graph_calcul(graphData[1]) #grapheData[0] = alives / [1] = calculTime / [2] = dead
