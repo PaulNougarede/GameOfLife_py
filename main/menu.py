@@ -49,6 +49,13 @@ def principeDuJeu(screen):
         ):  # si la souris est sur l'icône
             if pygame.mouse.get_pressed()[0]:  # si clic
                 return 0
+            
+        if (
+            1330 <= mouse_x <= 1330 + iconeQuitter.get_width()
+            and 20 <= mouse_y <= 20 + iconeQuitter.get_height()
+        ):  # si la souris est sur l'icône
+            if pygame.mouse.get_pressed()[0]:  # si clic
+                sys.exit()
 
 
 def choixDesRegles(screen):
@@ -80,15 +87,15 @@ def choixDesRegles(screen):
             screen, (255, 255, 255), (50, 250, 1300, 200)
         )  # affichage règles 1
         draw_text("Règles 1:", pygame.font.SysFont("Futura", 40), vert, 50, 250,screen)
-        draw_text("- ", pygame.font.SysFont("Futura", 40), vert, 50, 300,screen)
-        draw_text("- ", pygame.font.SysFont("Futura", 40), vert, 50, 350,screen)
-        draw_text("- ", pygame.font.SysFont("Futura", 40), vert, 50, 400,screen)
+        draw_text("- Uniquement 2 cellules autour : meurt par isolement", pygame.font.SysFont("Futura", 40), vert, 50, 300,screen)
+        draw_text("- Plus de 3 cellules autour : meurt de surpopulation ", pygame.font.SysFont("Futura", 40), vert, 50, 350,screen)
+        draw_text("- 3 cellules autour de toi : naissance par invocation ", pygame.font.SysFont("Futura", 40), vert, 50, 400,screen)
 
         bouton_regles2 = pygame.draw.rect(screen, (255, 255, 255), (50, 500, 1300, 200))  # affichage règles 2
         draw_text("Règles 2:", pygame.font.SysFont("Futura", 40), vert, 50, 500,screen)
-        draw_text("- ", pygame.font.SysFont("Futura", 40), vert, 50, 550,screen)
-        draw_text("- ", pygame.font.SysFont("Futura", 40), vert, 50, 600,screen)
-        draw_text("- ", pygame.font.SysFont("Futura", 40), vert, 50, 650,screen)
+        draw_text("- Uniquement 2 cellules autour : meurt par isolement", pygame.font.SysFont("Futura", 40), vert, 50, 550,screen)
+        draw_text("- Plus de 3 cellules autour : meurt de surpopulation", pygame.font.SysFont("Futura", 40), vert, 50, 600,screen)
+        draw_text("- 1 cellules autour de toi : naissance par invocation", pygame.font.SysFont("Futura", 40), vert, 50, 650,screen)
 
         pygame.display.flip()
 
@@ -180,9 +187,15 @@ def menu(screen):
                 pygame.display.flip()
                 time.sleep(0.2)
                 rules = choixDesRegles(screen)
+                time.sleep(0.2)
+                taille = choix_taille(screen)
+                time.sleep(0.2)
+                mode = choix_mode(screen)
                 if rules != 0:
-                    return (rules, plate, 0)
+                    return (rules, plate, 0, taille[0], taille[1], mode) #taille[0] = rows / taille[1] = cols
                 
+                
+
         if bouton_ChargerPartie.collidepoint(
             pygame.mouse.get_pos()
         ): # si souris sur le bouton
@@ -198,3 +211,120 @@ def menu(screen):
                 rules = tuple_info[2]
 
                 return (rules, plate, nbr_tour)
+            
+
+def choix_taille(screen):
+    running = True
+
+    while running:  # boucle infinie
+        vert = (0, 122, 123)
+        screen.fill(vert)  # couleur fond
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:  # si la croix est cliquée
+                running = False
+                pygame.quit()
+                sys.exit()
+            if event.type == KEYDOWN:  # si on appuie sur une touche
+                if event.key == K_ESCAPE:  # si c'est la touch echap
+                    pygame.quit()
+                    sys.exit()
+
+        bouton_petit = pygame.draw.rect(screen, (255, 255, 255), (50, 350, 350, 100))  # affichage bouton
+        draw_text("Petit", pygame.font.SysFont("Futura", 80), vert, 150, 375, screen)
+
+        bouton_moyen = pygame.draw.rect(screen, (255, 255, 255), (500, 350, 350, 100))  # affichage bouton
+        draw_text("Moyen", pygame.font.SysFont("Futura", 80), vert, 585, 375, screen)
+
+        bouton_grand = pygame.draw.rect(screen, (255, 255, 255), (950, 350, 350, 100))  # affichage bouton
+        draw_text("Grand", pygame.font.SysFont("Futura", 80), vert, 1035, 375, screen)
+
+        pygame.display.flip()
+
+        if bouton_petit.collidepoint(
+            pygame.mouse.get_pos()
+        ):  # si souris sur le bouton
+            if pygame.mouse.get_pressed()[0]:  # si clic
+                bouton_petit = pygame.draw.rect(
+                    screen, vert, (50, 350, 350, 100)
+                )  # affichage bouton
+                draw_text("Petit",pygame.font.SysFont("Futura", 80),(255, 255, 255),150,375,screen)
+                pygame.display.flip()
+                time.sleep(0.2)
+                rows = 50
+                cols = 50
+                return (rows, cols)
+
+        if bouton_moyen.collidepoint(
+            pygame.mouse.get_pos()
+        ):  # si souris sur le bouton
+            if pygame.mouse.get_pressed()[0]:  # si clic
+                bouton_moyen = pygame.draw.rect(
+                    screen, vert, (500, 350, 350, 100)
+                )  # affichage bouton
+                draw_text("Moyen",pygame.font.SysFont("Futura", 80),(255, 255, 255),585,375,screen)
+                pygame.display.flip()
+                time.sleep(0.2)
+                rows = 100
+                cols = 100
+                return(rows, cols)
+                
+        if bouton_grand.collidepoint(
+            pygame.mouse.get_pos()
+        ): # si souris sur le bouton
+            if pygame.mouse.get_pressed()[0]: #si clc
+                bouton_grand = pygame.draw.rect(screen, vert, (950,350,350,100))
+                draw_text("Grand",pygame.font.SysFont("Futura", 80),(255, 255, 255),1035,375,screen)
+                pygame.display.flip()
+                time.sleep(0.2)
+                rows = 150
+                cols = 150
+                return(rows, cols)
+            
+            
+def choix_mode(screen):
+    running = True
+
+    while running:  # boucle infinie
+        vert = (0, 122, 123)
+        screen.fill(vert)  # couleur fond
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:  # si la croix est cliquée
+                running = False
+                pygame.quit()
+                sys.exit()
+            if event.type == KEYDOWN:  # si on appuie sur une touche
+                if event.key == K_ESCAPE:  # si c'est la touch echap
+                    pygame.quit()
+                    sys.exit()
+
+        bouton_alea = pygame.draw.rect(screen, (255, 255, 255), (100, 350, 500, 100))  # affichage bouton
+        draw_text("Aléatoire", pygame.font.SysFont("Futura", 80), vert, 220, 375, screen)
+
+        bouton_manu = pygame.draw.rect(screen, (255, 255, 255), (800, 350, 500, 100))  # affichage bouton
+        draw_text("Manuel", pygame.font.SysFont("Futura", 80), vert, 940, 375, screen)
+
+        pygame.display.flip()
+
+        if bouton_alea.collidepoint(
+            pygame.mouse.get_pos()
+        ):  # si souris sur le bouton
+            if pygame.mouse.get_pressed()[0]:  # si clic
+                bouton_alea = pygame.draw.rect(
+                    screen, vert, (100, 350, 500, 100)
+                )  # affichage bouton
+                draw_text("Aléatoire",pygame.font.SysFont("Futura", 80),(255, 255, 255),220,375,screen)
+                pygame.display.flip()
+                time.sleep(0.2)
+                return (1)
+
+        if bouton_manu.collidepoint(
+            pygame.mouse.get_pos()
+        ):  # si souris sur le bouton
+            if pygame.mouse.get_pressed()[0]:  # si clic
+                bouton_manu = pygame.draw.rect(
+                    screen, vert, (800, 350, 500, 100)
+                )  # affichage bouton
+                draw_text("Manuel",pygame.font.SysFont("Futura", 80),(255, 255, 255),940,375,screen)
+                pygame.display.flip()
+                time.sleep(0.2)
+                return(2)

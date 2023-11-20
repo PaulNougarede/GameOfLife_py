@@ -6,7 +6,7 @@ import time
 import save as Save
 
 
-def game(width, height, rows, cols, speed, rule_choice, plate, nbr_tour):
+def game(width, height, rows, cols, speed, rule_choice, plate, nbr_tour, mode):
 
     # Dimensions du plateau
     game_width, game_height = 1100, 800
@@ -14,7 +14,10 @@ def game(width, height, rows, cols, speed, rule_choice, plate, nbr_tour):
 
     # random plate
     if len(plate)==0:
-        plate = np.random.choice([0,1], size=(rows, cols))
+        if mode == 1:
+            plate = np.random.choice([0,1], size=(rows, cols))
+        else :
+            plate = np.zeros((rows, cols), dtype=int)
 
     # init display
     #pygame.init()
@@ -167,8 +170,12 @@ def game(width, height, rows, cols, speed, rule_choice, plate, nbr_tour):
                             count_dead +=1
                             new_plate[row, col] = 0
                     else:
-                        if count == 3:
-                            new_plate[row, col] = 1
+                        if rule_choice == 1 :
+                            if count == 3:
+                                new_plate[row, col] = 1
+                        else :
+                            if count == 1:
+                                new_plate[row, col] = 1
             end = time.process_time()
 
             calculTime.append(end-start)
