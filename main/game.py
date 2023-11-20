@@ -2,8 +2,7 @@ import numpy as np
 import pygame
 from pygame.locals import *
 import function.click as click
-import sys
-import menu as Menu
+import time
 import save as Save
 
 
@@ -15,10 +14,10 @@ def game(width, height, rows, cols, speed, rule_choice, plate, nbr_tour):
 
     # random plate
     if len(plate)==0:
-        plate = np.random.choice([0, 1], size=(rows, cols))
+        plate = np.random.choice([0,1], size=(rows, cols))
 
     # init display
-    pygame.init()
+    #pygame.init()
     screen = pygame.display.set_mode((width, height))
     white = (255, 255, 255)
     black = (0, 0, 0)
@@ -30,6 +29,7 @@ def game(width, height, rows, cols, speed, rule_choice, plate, nbr_tour):
     # Tableaux de Cellules vivantes et Itérations
     alives = []
     dead = []
+    calculTime = []
 
     # init image
     iconePause1 = pygame.image.load(
@@ -75,6 +75,8 @@ def game(width, height, rows, cols, speed, rule_choice, plate, nbr_tour):
         screen.blit(text_alive, (1160,130))
         text_dead = font.render("Cellule morte :", True, (255,255,255))
         screen.blit(text_dead, (1160,180))
+        text_dead = font.render("Temps de calcul :", True, (255,255,255))
+        screen.blit(text_dead, (1160,230))
         if alives :
             nbr_cellule = str(alives[-1])
             affichage_nbr_cellule = font.render(nbr_cellule, True, (9,120,0))
@@ -83,6 +85,10 @@ def game(width, height, rows, cols, speed, rule_choice, plate, nbr_tour):
             nbr_mort = str(dead[-1])
             affichage_nbr_mort = font.render(nbr_mort, True, (120,9,0))
             screen.blit(affichage_nbr_mort, (1190, 200))
+        if calculTime :
+            time = str(calculTime[-1])
+            affichage_time = font.render(time, True, (100,200,50))
+            screen.blit(affichage_time, (1190, 250))
         
         text_tour = font.render("Nombre de tour :", True, (255,255,255))
         screen.blit(text_tour, (1160,500))
@@ -90,8 +96,6 @@ def game(width, height, rows, cols, speed, rule_choice, plate, nbr_tour):
         affichage_nbr_tour = font.render(nbr_tour, True, (255,255,255))
         screen.blit(affichage_nbr_tour, (1190,520))
         
-
-
     # Fonction pour obtenir l'état d'une cellule avec des bords toriques
     def get_cell(x, y):
         return plate[x % rows, y % cols]
@@ -107,7 +111,6 @@ def game(width, height, rows, cols, speed, rule_choice, plate, nbr_tour):
     while running:
         count_alive = 0
         count_dead = 0
-        nbr_tour += 1
         rows, cols = rows, cols
         cell_width = game_width // cols
         cell_height = game_height // rows
@@ -119,7 +122,7 @@ def game(width, height, rows, cols, speed, rule_choice, plate, nbr_tour):
                 if event.button == 1:
                     mouse_x, mouse_y = pygame.mouse.get_pos()
                     if (1300 <= mouse_x <= 1300 + iconeQuitter.get_width()and 20 <= mouse_y <= 20 + iconeQuitter.get_height()):
-                        sys.exit()
+                        running = False
                     elif (1230 <= mouse_x <= 1230 + iconeStop.get_width()and 23 <= mouse_y <= 23 + iconeStop.get_height()):
                         Save.save(plate, nbr_tour, rule_choice)
                     elif (1170 <= mouse_x <= 1170 + iconeZoomArriere.get_width()and 700 <= mouse_y <= 700 + iconeZoomArriere.get_height()):
@@ -143,7 +146,9 @@ def game(width, height, rows, cols, speed, rule_choice, plate, nbr_tour):
         pygame.display.flip()
 
         if not pause:
+            nbr_tour += 1
             new_plate = plate.copy()
+            start = time.process_time()
             for row in range(rows):
                 for col in range(cols):
                     count = (
@@ -159,12 +164,14 @@ def game(width, height, rows, cols, speed, rule_choice, plate, nbr_tour):
                     if plate[row, col] == 1:
                         count_alive += 1
                         if count < 2 or count > 3:
+                            count_dead +=1
                             new_plate[row, col] = 0
                     else:
-                        count_dead +=1
                         if count == 3:
                             new_plate[row, col] = 1
+            end = time.process_time()
 
+            calculTime.append(end-start)
             alives.append(count_alive)
             dead.append(count_dead)
             plate = new_plate
@@ -172,6 +179,4 @@ def game(width, height, rows, cols, speed, rule_choice, plate, nbr_tour):
         clock.tick(speed)  # Ajustez la vitesse d'itération
 
     # Quittez Pygame
-    pygame.quit()
-
-    return alives
+    return (alives, calculTime, dead)

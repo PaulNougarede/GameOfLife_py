@@ -1,9 +1,6 @@
 import numpy as np
-import pygame
 from pygame.locals import *
-import function.click as click
-import sys
-import menu as Menu
+
 
 def save(plate, nbr_tour, rules_choice):
     with open("Sauvegarde/matrice.npy","wb") as f:
