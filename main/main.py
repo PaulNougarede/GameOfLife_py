@@ -1,7 +1,6 @@
 import pygame
 from pygame.locals import *
 import game as Game
-import graphs.graphAlive as Graph
 import menu as Menu
 import pageAccueil as PageAccueil
 
@@ -20,7 +19,6 @@ start_game = PageAccueil.pageAccueil(screen)
 if start_game:
     info = Menu.menu(screen) #info[0] : rules_choice / info[1] = plate / info[2] = nbr_tour / info[3] = rows / info[4] = cols / info[5] = mode
     graphData = Game.game(width, height, info[3], info[4], speed, info[0], info[1], info[2], info[5])
+    #grapheData[0] = alives / [1] = calculTime / [2] = dead
+    Menu.menu_graphs(screen,graphData)
     pygame.quit()
-    Graph.graph_alive(graphData[0]) #grapheData[0] = alives / [1] = calculTime / [2] = dead
-    Graph.graph_death(graphData[2]) #grapheData[0] = alives / [1] = calculTime / [2] = dead
-    Graph.graph_calcul(graphData[1]) #grapheData[0] = alives / [1] = calculTime / [2] = dead
