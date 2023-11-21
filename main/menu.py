@@ -1,6 +1,7 @@
 import pygame, sys, time
 from pygame.locals import *
 import save as Save
+import graphs.graphAlive as Graph
 
 def draw_text(text, font, color, x, y, screen):
         img = font.render(text, True, color)
@@ -328,3 +329,55 @@ def choix_mode(screen):
                 pygame.display.flip()
                 time.sleep(0.2)
                 return(2)
+            
+def menu_graphs(screen, graphData):
+
+    running = True
+
+    while running:  # boucle infinie
+        vert = (0, 122, 123)
+        blanc = (255,255,255)
+        screen.fill(vert)  # couleur fond
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:  # si la croix est cliquée
+                running = False
+                pygame.quit()
+                sys.exit()
+            if event.type == KEYDOWN:  # si on appuie sur une touche
+                if event.key == K_ESCAPE:  # si c'est la touch echap
+                    pygame.quit()
+                    sys.exit()
+
+        bouton_vivante = pygame.draw.rect(screen, blanc, (50, 350, 350, 100))  # affichage bouton
+        draw_text("Vivante", pygame.font.SysFont("Futura", 80), vert, 150, 375, screen)
+
+        bouton_morte = pygame.draw.rect(screen, blanc, (500, 350, 350, 100))  # affichage bouton
+        draw_text("Morte", pygame.font.SysFont("Futura", 80), vert, 585, 375, screen)
+
+        bouton_calcul = pygame.draw.rect(screen, blanc, (950, 350, 350, 100))  # affichage bouton
+        draw_text("Calcul", pygame.font.SysFont("Futura", 80), vert, 1035, 375, screen)
+
+        pygame.display.flip()
+
+        #grapheData[0] = alives / [1] = calculTime / [2] = dead
+
+        if bouton_vivante.collidepoint(
+            pygame.mouse.get_pos()
+        ):  # si souris sur le bouton
+            if pygame.mouse.get_pressed()[0]:  # si clic
+                pygame.display.flip()
+                time.sleep(0.05)
+                Graph.graph_alive(graphData[0])
+                
+
+        if bouton_morte.collidepoint(pygame.mouse.get_pos()):  # si souris sur le bouton
+            if pygame.mouse.get_pressed()[0]:  # si clic
+                pygame.display.flip()
+                time.sleep(0.2)
+                Graph.graph_death(graphData[2])
+                
+        if bouton_calcul.collidepoint(pygame.mouse.get_pos()): # si souris sur le bouton
+            if pygame.mouse.get_pressed()[0]: #si clc
+                pygame.display.flip()
+                time.sleep(0.2)
+                Graph.graph_calcul(graphData[1])
