@@ -5,6 +5,7 @@ import menu as Menu
 
 def pageAccueil(screen):
     vert = (0, 122, 123)
+    blanc = (255, 255, 255)
     jeu = False
 
     imageMenuAccueil = pygame.image.load("main/images/menuAccueil.png").convert_alpha()
@@ -29,20 +30,16 @@ def pageAccueil(screen):
         pygame.display.flip()  # affichage
 
         mouse = pygame.mouse.get_pos()  # positions de la souris dans un tuple
-        # light shade of the button
-        color_light = (170, 170, 170)
-
-        bouton_rect = pygame.draw.rect(
-            screen, (255, 255, 255), (525, 450, 300, 100)
-        )  # affichage bouton
+        
+        bouton_rect = pygame.draw.rect(screen, blanc, (525, 450, 300, 100), 0, 5)  # affichage bouton
+        bord_rect = pygame.draw.rect(screen, vert, (535, 460, 280, 80), 7, 5)
         Menu.draw_text("JOUER", pygame.font.SysFont("Futura", 80), vert, 580, 475,screen)
 
         if bouton_rect.collidepoint(pygame.mouse.get_pos()):  # si souris sur le bouton
             if pygame.mouse.get_pressed()[0]:  # si clic
-                bouton_rect = pygame.draw.rect(
-                    screen, vert, (525, 450, 300, 100)
-                )  # affichage bouton
-                Menu.draw_text("JOUER",pygame.font.SysFont("Futura", 80),(255, 255, 255),580,475,screen)
+                bouton_rect = pygame.draw.rect(screen, vert, (525, 450, 300, 100))  # affichage bouton
+                bord_rect = pygame.draw.rect(screen, blanc, (535, 460, 280, 80), 7, 5)
+                Menu.draw_text("JOUER", pygame.font.SysFont("Futura", 80), blanc, 580, 475, screen)
                 pygame.display.flip()
                 jeu = True  # la prochaine page s'affichera
                 running = False
