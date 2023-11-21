@@ -2,26 +2,27 @@ import numpy as np
 from pygame.locals import *
 
 
-def save(plate, nbr_tour, rules_choice):
+def save(info, nbr_tour):
     with open("Sauvegarde/matrice.npy","wb") as f:
-        np.save(f, plate)
-    with open("Sauvegarde/nombre_tour.txt", "w") as file1 :
-        file1.write(str(nbr_tour))
+        np.save(f, info[1]) #plate[]
+    with open("Sauvegarde/configuration.txt", "w") as file1 :
+        file1.write(str(info[0])+"\n") # rules_choice
+        file1.write(str(nbr_tour)+"\n") # nbr_tour
+        file1.write(str(info[3])+"\n") # rows
+        file1.write(str(info[4])+"\n") # cols
+        file1.write(str(info[5])+"\n") # mode
         file1.close()
-    with open("Sauvegarde/rules.txt", "w") as file2 :
-        file2.write(str(rules_choice))
-        file2.close()
-
-
+        
 def charge_plate():
     with open("Sauvegarde/matrice.npy", "rb") as f:
         plate = np.load(f)
-    with open("Sauvegarde/nombre_tour.txt", "r") as file1 :
-        nbr_tour = file1.read()
-
+    with open("Sauvegarde/configuration.txt", "r") as file1 :
+        conf = file1.readlines()
+        rules_choice = int(conf[0])
+        nbr_tour = int(conf[1])
+        rows = int(conf[2])
+        cols = int(conf[3])
+        mode = int(conf[4])
         file1.close()
-    with open("Sauvegarde/rules.txt", "r") as file2 :
-        rules_choice = file2.read()
-        file2.close()
 
-    return (plate, nbr_tour, rules_choice)
+    return (rules_choice,plate, nbr_tour,rows,cols,mode)

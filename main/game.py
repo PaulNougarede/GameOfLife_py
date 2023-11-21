@@ -6,7 +6,15 @@ import time
 import save as Save
 
 
-def game(width, height, rows, cols, speed, rule_choice, plate, nbr_tour, mode):
+def game(width, height, speed, info):
+
+    # Recuperation des donnes de configuration 
+    rule_choice = info[0]
+    plate = info[1]
+    nbr_tour = info[2]
+    rows = info[3]
+    cols = info[4]
+    mode = info[5]
 
     # Dimensions du plateau
     game_width, game_height = 1100, 800
@@ -127,7 +135,7 @@ def game(width, height, rows, cols, speed, rule_choice, plate, nbr_tour, mode):
                     if (1300 <= mouse_x <= 1300 + iconeQuitter.get_width()and 20 <= mouse_y <= 20 + iconeQuitter.get_height()):
                         running = False
                     elif (1230 <= mouse_x <= 1230 + iconeStop.get_width()and 23 <= mouse_y <= 23 + iconeStop.get_height()):
-                        Save.save(plate, nbr_tour, rule_choice)
+                        Save.save(info, nbr_tour)
                     elif (1170 <= mouse_x <= 1170 + iconeZoomArriere.get_width()and 700 <= mouse_y <= 700 + iconeZoomArriere.get_height()):
                         if rows * 2 <= initialRows or cols * 2 <= initialCols:
                             rows, cols = int(rows * 2), int(cols * 2)
