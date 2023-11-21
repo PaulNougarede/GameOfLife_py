@@ -207,11 +207,14 @@ def menu(screen):
                 time.sleep(0.2)
                 tuple_info = Save.charge_plate()
 
-                plate = tuple_info[0]
-                nbr_tour = tuple_info[1]
-                rules = tuple_info[2]
+                rules_choice = tuple_info[0]
+                plate = tuple_info[1]
+                nbr_tour = tuple_info[2]
+                rows = tuple_info[3]
+                cols = tuple_info[4]
+                mode = tuple_info[5]
 
-                return (rules, plate, nbr_tour)
+                return (rules_choice, plate, nbr_tour,rows,cols,mode)
             
 
 def choix_taille(screen):
