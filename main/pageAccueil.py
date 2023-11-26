@@ -43,5 +43,5 @@ def pageAccueil(screen):
                 pygame.display.flip()
                 jeu = True  # la prochaine page s'affichera
                 running = False
-                time.sleep(0.2)
+                time.sleep(0.07)
     return jeu
