@@ -139,6 +139,8 @@ def menu(screen):
     
     vert = (0, 122, 123)
     blanc = (255, 255, 255)
+    iconeQuitter = pygame.image.load("main/images/icone_quitter.png").convert_alpha() #icone quitter le jeu
+    iconeQuitter = pygame.transform.scale(iconeQuitter, (50, 50)) #mise à l'échelle
     
     while running:  # boucle infinie
         for event in pygame.event.get():
@@ -153,8 +155,7 @@ def menu(screen):
                     
         screen.fill(vert)
         
-        iconeQuitter = pygame.image.load("main/images/icone_quitter.png").convert_alpha() #icone quitter le jeu
-        iconeQuitter = pygame.transform.scale(iconeQuitter, (50, 50)) #mise à l'échelle
+        
         screen.blit(iconeQuitter, (1330, 20))
         
         bouton_principeDuJeu = pygame.draw.rect(screen, blanc, (430, 150, 550, 100), 0, 5)  # affichage bouton
@@ -182,7 +183,7 @@ def menu(screen):
                 bord_principeDuJeu = pygame.draw.rect(screen, blanc, (440, 160, 530, 80), 7, 5)
                 draw_text("Principe du jeu", pygame.font.SysFont("Futura", 75), blanc, 505, 175, screen)
                 pygame.display.flip()
-                time.sleep(0.05)
+                time.sleep(0.1)
                 principeDuJeu(screen)
 
         if bouton_nvlPartie.collidepoint(pygame.mouse.get_pos()):  # si souris sur le bouton
@@ -191,11 +192,11 @@ def menu(screen):
                 bord_nvlPartie = pygame.draw.rect(screen, blanc, (440, 360, 530, 80), 7, 5)
                 draw_text("Nouvelle partie", pygame.font.SysFont("Futura", 75), blanc, 500, 375, screen)
                 pygame.display.flip()
-                time.sleep(0.05)
+                time.sleep(0.1)
                 rules = choixDesRegles(screen)
-                time.sleep(0.05)
+                time.sleep(0.1)
                 taille = choix_taille(screen)
-                time.sleep(0.05)
+                time.sleep(0.1)
                 mode = choix_mode(screen)
                 if rules != 0:
                     return (rules, plate, 0, taille[0], taille[1], mode) #taille[0] = rows / taille[1] = cols
@@ -337,6 +338,8 @@ def menu_graphs(screen, graphData):
     running = True
     vert = (0, 122, 123)
     blanc = (255,255,255)
+    iconeQuitter = pygame.image.load("main/images/icone_quitter.png").convert_alpha() #icone quitter le jeu
+    iconeQuitter = pygame.transform.scale(iconeQuitter, (50, 50)) #mise à l'échelle
 
     while running:  # boucle infinie
         screen.fill(vert)  # couleur fond
@@ -350,8 +353,7 @@ def menu_graphs(screen, graphData):
                     pygame.quit()
                     sys.exit()
                     
-        iconeQuitter = pygame.image.load("main/images/icone_quitter.png").convert_alpha() #icone quitter le jeu
-        iconeQuitter = pygame.transform.scale(iconeQuitter, (50, 50)) #mise à l'échelle
+        
         screen.blit(iconeQuitter, (1330, 20))
 
         bouton_vivante = pygame.draw.rect(screen, blanc, (50, 350, 350, 160))  # affichage bouton
@@ -387,7 +389,7 @@ def menu_graphs(screen, graphData):
                 draw_text("Cellules", pygame.font.SysFont("Futura", 80), blanc, 120, 375, screen)
                 draw_text("vivantes", pygame.font.SysFont("Futura", 80), blanc, 110, 425, screen)
                 pygame.display.flip()
-                time.sleep(0.05)
+                time.sleep(0.1)
                 Graph.graph_alive(graphData[0])
                 
 
@@ -398,7 +400,7 @@ def menu_graphs(screen, graphData):
                 draw_text("Cellules", pygame.font.SysFont("Futura", 80), blanc, 555, 375, screen)
                 draw_text("mortes", pygame.font.SysFont("Futura", 80), blanc, 585, 425, screen)
                 pygame.display.flip()
-                time.sleep(0.2)
+                time.sleep(0.1)
                 Graph.graph_death(graphData[2])
                 
         if bouton_calcul.collidepoint(pygame.mouse.get_pos()): # si souris sur le bouton
@@ -408,5 +410,5 @@ def menu_graphs(screen, graphData):
                 draw_text("Temps", pygame.font.SysFont("Futura", 80), blanc, 1035, 375, screen)
                 draw_text("de calcul", pygame.font.SysFont("Futura", 80), blanc, 1005, 425, screen)
                 pygame.display.flip()
-                time.sleep(0.2)
+                time.sleep(0.1)
                 Graph.graph_calcul(graphData[1])

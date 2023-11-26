@@ -1,8 +1,12 @@
-def cliqueCase(plate, clickX, clickY, cell_width, cell_height):
-    row = clickX // cell_width
-    col = clickY // cell_height
-    if 0 <= row < plate.shape[0] and 0 <= col < plate.shape[1]:
-        plate[row, col] = 1 if plate[row, col] == 0 else 0
+def cliqueCase(plate, clickX, clickY, cell_width, cell_height, scale, offsetX, offsetY):
+    # Ajustez les coordonnées en fonction de l'offset et de l'échelle
+    adjustedX = (clickX - offsetX) // (cell_width * scale)
+    adjustedY = (clickY - offsetY) // (cell_height * scale)
+
+    # Vérifiez que les coordonnées ajustées sont dans les limites du tableau
+    if 0 <= adjustedX < plate.shape[0] and 0 <= adjustedY < plate.shape[1]:
+        # Modifiez l'état de la cellule dans le tableau
+        plate[int(adjustedX), int(adjustedY)] = 1 if plate[int(adjustedX), int(adjustedY)] == 0 else 0
     # turn = 0
     # while clickX > cell_width:
     #     turn += 1
