@@ -199,13 +199,13 @@ def game(width, height, speed, info):
                     else:
                         click.cliqueCase(plate, mouse_x, mouse_y, cell_width, cell_height, scale, offsetX, offsetY)
                 elif event.button == 3:
-                    if event.type == pygame.MOUSEBUTTONDOWN and isClicked == pygame.K_a:
+                    if isClicked == pygame.K_a:
                         mouse_x, mouse_y = pygame.mouse.get_pos() 
                         Forme.square(plate, mouse_x , mouse_y, cell_width, cell_height)
-                    if event.type == pygame.MOUSEBUTTONDOWN and isClicked == pygame.K_z:
+                    if isClicked == pygame.K_z:
                         mouse_x, mouse_y = pygame.mouse.get_pos() 
                         Forme.planner(plate, mouse_x , mouse_y, cell_width, cell_height)
-                    if event.type == pygame.MOUSEBUTTONDOWN and isClicked == pygame.K_e:
+                    if isClicked == pygame.K_e:
                         mouse_x, mouse_y = pygame.mouse.get_pos() 
                         Forme.canon(plate, mouse_x , mouse_y, cell_width, cell_height)
                 elif event.button == 4:  # Molette vers le haut (zoom in)
