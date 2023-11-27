@@ -6,7 +6,13 @@ import time
 import save as Save
 import forme as Forme
 import menu as Menu
+from scipy.signal import convolve2d
 
+
+# Tableaux de Cellules vivantes et Itérations
+alives = []
+dead = []
+calculTime = []
 
 def game(width, height, speed, info):
 
@@ -138,18 +144,18 @@ def game(width, height, speed, info):
         affichage_nbr_tour = font.render(nbr_tour, True, white)
         screen.blit(iconeNombreDeTours, (1190, 540))
         screen.blit(affichage_nbr_tour, (1270,555))
-        
+
+    
     # Fonction pour obtenir l'état d'une cellule avec des bords toriques
     def get_cell(x, y):
         return plate[x % rows, y % cols]
+
+    nbr_tour = int(nbr_tour)
 
     # Boucle principale
     running = True
     clock = pygame.time.Clock()
     pause = False
-
-    nbr_tour = int(nbr_tour)
-
 
     while running:
         count_alive = 0
@@ -198,7 +204,7 @@ def game(width, height, speed, info):
                         speed +=1
                     else:
                         click.cliqueCase(plate, mouse_x, mouse_y, cell_width, cell_height, scale, offsetX, offsetY)
-                elif event.button == 3:
+                elif event.button == 3 :
                     if isClicked == pygame.K_a:
                         mouse_x, mouse_y = pygame.mouse.get_pos() 
                         Forme.square(plate, mouse_x , mouse_y, cell_width, cell_height)
@@ -266,3 +272,63 @@ def game(width, height, speed, info):
 
     # Quittez Pygame
     return (alives, calculTime, dead)
+
+def simulation(width, height, speed, info):
+
+    # Recuperation des donnes de configuration 
+    plate = info[1]
+    rows = info[3]
+    cols = info[4]
+    mode = info[5]
+
+    screen = pygame.display.set_mode((width, height))
+
+    font=pygame.font.SysFont("Futura", 30) #police d'écriture
+    text_chargement = font.render("Simulation en cours..." , True, (255,255,255))
+
+    screen.blit(text_chargement, (600,500))
+    pygame.display.flip()
+
+    total = rows * cols
+
+    def update_board(plate):
+        kernel = np.array([[1, 1, 1],[1, 0, 1],[1, 1, 1]])
+
+        neighbors_count = convolve2d(plate, kernel, mode='same', boundary='wrap')
+
+        new_plate = np.zeros_like(plate)
+        new_plate[(plate == 1) & ((neighbors_count == 2) | (neighbors_count == 3))] = 1
+        new_plate[(plate == 0) & (neighbors_count==3)]=1
+
+        return new_plate
+
+    # random plate
+    if len(plate)==0:
+        if mode == 1:
+            plate = np.random.choice([0,1], size=(rows, cols))
+        else :
+            plate = np.zeros((rows, cols), dtype=int)
+    
+    
+    for i in range(500):
+        start = time.process_time()
+        plate = update_board(plate)
+        end = time.process_time()
+        calculTime.append(end-start)
+        count_alive = np.sum(plate)
+        count_dead = total - count_alive
+        dead.append(count_dead)
+        alives.append(count_alive)
+    
+
+
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+        elif event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_ESCAPE:
+                running = False
+        
+    # Quittez Pygame
+    return (alives, calculTime, dead) 
+    
