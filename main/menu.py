@@ -221,69 +221,79 @@ def menu(screen):
             
 
 def choix_taille(screen):
+
+    width, height = 1400, 800
+
+    # Couleurs
+    BLANC = (255, 255, 255)
+    ROUGE = (255, 0, 0)
+
+    # Variables
+    valeur_variable = 10
+    valeur_min = 10
+    valeur_max = 1000
     running = True
-    vert = (0, 122, 123)
-    blanc = (255, 255, 255)
-    
+
+    # Chargement de la police
+    pygame.font.init()
+    police = pygame.font.SysFont("Futura", 24)
+
     while running:  # boucle infinie
-        
+        vert = (0, 122, 123)
         screen.fill(vert)  # couleur fond
         for event in pygame.event.get():
             if event.type == pygame.QUIT:  # si la croix est cliquée
                 running = False
                 pygame.quit()
                 sys.exit()
-            if event.type == KEYDOWN:  # si on appuie sur une touche
+            elif event.type == KEYDOWN:  # si on appuie sur une touche
                 if event.key == K_ESCAPE:  # si c'est la touch echap
                     pygame.quit()
                     sys.exit()
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                if width // 2 - 140 <= event.pos[0] <= width // 2 + 100 and height // 2 - 20 <= event.pos[1] <= height // 2 + 20:
+                    # Si le clic est dans la zone du curseur
+                    curseur_enfonce = True
+            elif event.type == pygame.MOUSEBUTTONUP:
+                curseur_enfonce = False
+        
+        # Mise à jour de la valeur de la variable en fonction de la position du curseur
+        if curseur_enfonce:
+            x_souris, _ = pygame.mouse.get_pos()
+            valeur_variable = int((x_souris - (width // 2 - 100)) / 200 * (valeur_max - valeur_min))
+            valeur_variable = max(valeur_min, min(valeur_max, valeur_variable))
 
-        bouton_petit = pygame.draw.rect(screen, blanc, (50, 350, 350, 100), 0, 5)  # affichage bouton
-        bord_petit = pygame.draw.rect(screen, vert, (60, 360, 330, 80), 7, 5)
-        draw_text("Petit", pygame.font.SysFont("Futura", 80), vert, 150, 375, screen)
+        # Effacement de l'écran
+        screen.fill(vert)
 
-        bouton_moyen = pygame.draw.rect(screen, blanc, (500, 350, 350, 100), 0, 5)  # affichage bouton
-        bord_moyen = pygame.draw.rect(screen, vert, (510, 360, 330, 80), 7, 5)
-        draw_text("Moyen", pygame.font.SysFont("Futura", 80), vert, 585, 375, screen)
+        # Dessin du curseur
+        pygame.draw.rect(screen, BLANC, (width // 2 - 140, height // 2 - 20, 240, 40))
+        pygame.draw.rect(screen, ROUGE, (width // 2 - 140 + int(valeur_variable / (valeur_max - valeur_min) * 200), height // 2 - 20, 40, 40))
 
-        bouton_grand = pygame.draw.rect(screen, blanc, (950, 350, 350, 100), 0, 5)  # affichage bouton
-        bord_grand = pygame.draw.rect(screen, vert, (960, 360, 330, 80), 7, 5)
-        draw_text("Grand", pygame.font.SysFont("Futura", 80), vert, 1035, 375, screen)
+        # Affichage de la valeur de la variable
+        texte = police.render(str(valeur_variable)+"x"+str(valeur_variable), True, BLANC)
+        texte_rect = texte.get_rect(center=(width // 2-20, height // 2 + 40))
+
+        #Affichage du message de choix
+        draw_text("Choisissez la taille du plateau", pygame.font.SysFont("Futura", 60), BLANC, 400, 200, screen)
+
+        #Affichage bouton
+        bouton_entree = pygame.draw.rect(screen, BLANC, (586, 525, 190, 70), 0, 5)  
+        bord_entree = pygame.draw.rect(screen, vert, (591, 530, 180, 60), 5, 5)
+        draw_text("Valider", pygame.font.SysFont("Futura", 60), vert, 606, 545, screen)
+
+        screen.blit(texte, texte_rect)
 
         pygame.display.flip()
 
-        if bouton_petit.collidepoint(pygame.mouse.get_pos()):  # si souris sur le bouton
-            if pygame.mouse.get_pressed()[0]:  # si clic
-                bouton_petit = pygame.draw.rect(screen, vert, (50, 350, 350, 100), 0, 5)  # affichage bouton
-                bord_petit = pygame.draw.rect(screen, blanc, (60, 360, 330, 80), 7, 5)
-                draw_text("Petit",pygame.font.SysFont("Futura", 80),blanc,150,375,screen)
-                pygame.display.flip()
-                time.sleep(0.2)
-                rows = 50
-                cols = 50
-                return (rows, cols)
-
-        if bouton_moyen.collidepoint(pygame.mouse.get_pos()):  # si souris sur le bouton
-            if pygame.mouse.get_pressed()[0]:  # si clic
-                bouton_moyen = pygame.draw.rect(screen, vert, (500, 350, 350, 100), 0, 5)  # affichage bouton
-                bord_moyen = pygame.draw.rect(screen, blanc, (510, 360, 330, 80), 7, 5)
-                draw_text("Moyen",pygame.font.SysFont("Futura", 80),blanc,585,375,screen)
-                pygame.display.flip()
-                time.sleep(0.2)
-                rows = 100
-                cols = 100
-                return(rows, cols)
-                
-        if bouton_grand.collidepoint(pygame.mouse.get_pos()): # si souris sur le bouton
+        if bouton_entree.collidepoint(pygame.mouse.get_pos()): # si souris sur le bouton
             if pygame.mouse.get_pressed()[0]: #si clc
-                bouton_grand = pygame.draw.rect(screen, vert, (950,350,350,100), 0, 5)
-                bord_grand = pygame.draw.rect(screen, blanc, (960, 360, 330, 80), 7, 5)
-                draw_text("Grand",pygame.font.SysFont("Futura", 80),blanc,1035,375,screen)
+                bouton_entree = pygame.draw.rect(screen, vert, (586,525,190,70), 0, 5)
+                bord_entree = pygame.draw.rect(screen, BLANC, (591, 530, 180, 60), 7, 5)
+                draw_text("Valider", pygame.font.SysFont("Futura", 60), BLANC, 606, 545, screen)
                 pygame.display.flip()
                 time.sleep(0.2)
-                rows = 150
-                cols = 150
-                return(rows, cols)
+                return (valeur_variable, valeur_variable)
             
             
 def choix_mode(screen):
