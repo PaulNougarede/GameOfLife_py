@@ -43,6 +43,7 @@ def game(width, height, speed, info):
     screen = pygame.display.set_mode((width, height))
     white = (255, 255, 255)
     black = (0, 0, 0)
+    eceColor = (0,122,123)
 
     # Tailles de cellule
     cell_width = game_width // cols
@@ -81,14 +82,21 @@ def game(width, height, speed, info):
 
     # Fonction pour afficher uniquement les cellules modifiées
     def displayPlate(plate):
-        screen.fill((0,0,0))
+        screen.fill((40,40,40))
+        mid = rows // 2
         for row in range(rows):
             for col in range(cols):
                 if plate[row, col] == 1:
                     color = white
+                elif row == mid and col == mid:
+                    color = eceColor
                 else:
                     color = black
-                pygame.draw.rect(screen,color,((row * cell_width* scale) + offsetX, (col * cell_height* scale) + offsetY, cell_width * scale, cell_height * scale))
+                rect = ((row * cell_width * scale) + offsetX, (col * cell_height * scale) + offsetY, cell_width * scale, cell_height * scale)
+                pygame.draw.rect(screen,color,rect)
+                pygame.draw.rect(screen,(40,40,40),rect,1)
+
+
 
     # def display_grid(partie,screen):
     # screen.fill((255,255,255))
@@ -160,9 +168,9 @@ def game(width, height, speed, info):
     while running:
         count_alive = 0
         count_dead = 0
-        # rows, cols = rows, cols
-        # cell_width = game_width // cols
-        # cell_height = game_height // rows
+        testA = False
+        testZ = False
+        testE = False
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -177,6 +185,17 @@ def game(width, height, speed, info):
                     offsetY -= 10
                 if isClicked == pygame.K_DOWN:
                     offsetY += 10
+                if isClicked == pygame.K_a:
+                    mouse_x, mouse_y = pygame.mouse.get_pos()
+                    Forme.square(plate, mouse_x , mouse_y, cell_width, cell_height, scale, offsetX, offsetY)
+                if isClicked == pygame.K_z:
+                    mouse_x, mouse_y = pygame.mouse.get_pos()
+                    Forme.planner(plate, mouse_x , mouse_y, cell_width, cell_height, scale, offsetX, offsetY)
+                if isClicked == pygame.K_e:
+                    mouse_x, mouse_y = pygame.mouse.get_pos()
+                    Forme.canon(plate, mouse_x , mouse_y, cell_width, cell_height, scale, offsetX, offsetY)
+                if isClicked == pygame.K_c:
+                    plate = np.zeros((rows, cols), dtype=int)
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == 1:
                     mouse_x, mouse_y = pygame.mouse.get_pos()
@@ -184,12 +203,6 @@ def game(width, height, speed, info):
                         running = False
                     elif (1230 <= mouse_x <= 1230 + iconeStop.get_width()and 23 <= mouse_y <= 23 + iconeStop.get_height()):
                         Save.save(info, nbr_tour)
-                    # elif (1145 <= mouse_x <= 1145 + iconeZoomArriere.get_width()and 720 <= mouse_y <= 720 + iconeZoomArriere.get_height()):
-                    #     if rows * 2 <= initialRows or cols * 2 <= initialCols:
-                    #         rows, cols = int(rows * 2), int(cols * 2)
-                    # elif (1145 <= mouse_x <= 1145 + iconeZoomAvant.get_width()and 660 <= mouse_y <= 660 + iconeZoomAvant.get_height()):
-                    #     if rows != 1 or cols != 1:
-                    #         rows, cols = int(rows * 0.5), int(cols * 0.5)
                     elif (1150 <= mouse_x <= 1150 + iconePause1.get_width()and 20 <= mouse_y <= 20 + iconePause1.get_height()):
                         if not pause:
                             screen.blit(iconePause2, (1150, 20))
@@ -204,16 +217,6 @@ def game(width, height, speed, info):
                         speed +=1
                     else:
                         click.cliqueCase(plate, mouse_x, mouse_y, cell_width, cell_height, scale, offsetX, offsetY)
-                elif event.button == 3 :
-                    if isClicked == pygame.K_a:
-                        mouse_x, mouse_y = pygame.mouse.get_pos() 
-                        Forme.square(plate, mouse_x , mouse_y, cell_width, cell_height)
-                    if isClicked == pygame.K_z:
-                        mouse_x, mouse_y = pygame.mouse.get_pos() 
-                        Forme.planner(plate, mouse_x , mouse_y, cell_width, cell_height)
-                    if isClicked == pygame.K_e:
-                        mouse_x, mouse_y = pygame.mouse.get_pos() 
-                        Forme.canon(plate, mouse_x , mouse_y, cell_width, cell_height)
                 elif event.button == 4:  # Molette vers le haut (zoom in)
                     old_scale = scale
                     scale += 1
@@ -272,6 +275,7 @@ def game(width, height, speed, info):
 
     # Quittez Pygame
     return (alives, calculTime, dead)
+
 
 def simulation(width, height, speed, info):
 

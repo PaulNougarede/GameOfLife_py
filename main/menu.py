@@ -197,7 +197,10 @@ def menu(screen):
                 time.sleep(0.1)
                 taille = choix_taille(screen)
                 time.sleep(0.1)
-                mode = choix_mode(screen)
+                if(taille[0] < 500):
+                    mode = choix_mode(screen)
+                else:
+                    mode = 1
                 if rules != 0:
                     return (rules, plate, 0, taille[0], taille[1], mode) #taille[0] = rows / taille[1] = cols
                 
