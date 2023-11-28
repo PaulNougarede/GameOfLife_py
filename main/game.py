@@ -33,7 +33,6 @@ def game(width, height, speed, info):
 
     # random plate
     if len(plate)==0:
-        print("yoyoyoyoyo")
         if mode == 1:
             plate = np.random.choice([0,1], size=(rows, cols))
         else :
