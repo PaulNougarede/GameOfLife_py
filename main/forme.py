@@ -4,8 +4,8 @@
 
 def square(plate, clickX , clickY, cell_width, cell_height, scale, offsetX, offsetY ) :
 
-    row = (clickX - offsetX) // (cell_width * scale)
-    col = (clickY - offsetY) // (cell_height * scale)
+    row = int((clickX - offsetX) // (cell_width * scale))
+    col = int((clickY - offsetY) // (cell_height * scale))
     
     if 0 <= row < plate.shape[0] and 0 <= col < plate.shape[1]:
         plate[row, col] = 1
@@ -18,8 +18,8 @@ def square(plate, clickX , clickY, cell_width, cell_height, scale, offsetX, offs
 
 def planner(plate, clickX , clickY, cell_width, cell_height, scale, offsetX, offsetY ) :
 
-    row = (clickX - offsetX) // (cell_width * scale)
-    col = (clickY - offsetY) // (cell_height * scale)
+    row = int((clickX - offsetX) // (cell_width * scale))
+    col = int((clickY - offsetY) // (cell_height * scale))
     
     if 0 <= row < plate.shape[0] and 0 <= col < plate.shape[1]:
         plate[row, col] = 1
@@ -28,14 +28,14 @@ def planner(plate, clickX , clickY, cell_width, cell_height, scale, offsetX, off
     if 0 <= row+1 < plate.shape[0] and 0 <= col-2 < plate.shape[1]:
         plate[row+1, col-2] = 1
     if 0 <= row+1 < plate.shape[0] and 0 <= col < plate.shape[1]:
-         plate[row+1, col] = 1
+        plate[row+1, col] = 1
     if 0 <= row+2 < plate.shape[0] and 0 <= col < plate.shape[1]:
         plate[row+2, col] = 1
         
 def canon(plate, clickX , clickY, cell_width, cell_height, scale, offsetX, offsetY ) :
 
-    row = (clickX - offsetX) // (cell_width * scale)
-    col = (clickY - offsetY) // (cell_height * scale)
+    row = int((clickX - offsetX) // (cell_width * scale))
+    col = int((clickY - offsetY) // (cell_height * scale))
     
     if 0 <= row < plate.shape[0] and 0 <= col < plate.shape[1]:
         plate[row, col] = 1

@@ -33,6 +33,7 @@ def game(width, height, speed, info):
 
     # random plate
     if len(plate)==0:
+        print("yoyoyoyoyo")
         if mode == 1:
             plate = np.random.choice([0,1], size=(rows, cols))
         else :
@@ -88,10 +89,12 @@ def game(width, height, speed, info):
             for col in range(cols):
                 if plate[row, col] == 1:
                     color = white
-                elif row == mid and col == mid:
-                    color = eceColor
+                    if row == mid and col == mid:
+                        color = (255,0,0)
                 else:
                     color = black
+                    if row == mid and col == mid:
+                        color = eceColor
                 rect = ((row * cell_width * scale) + offsetX, (col * cell_height * scale) + offsetY, cell_width * scale, cell_height * scale)
                 pygame.draw.rect(screen,color,rect)
                 pygame.draw.rect(screen,(40,40,40),rect,1)
@@ -165,7 +168,10 @@ def game(width, height, speed, info):
     clock = pygame.time.Clock()
     pause = False
 
+
+
     while running:
+        
         count_alive = 0
         count_dead = 0
         testA = False
@@ -202,7 +208,7 @@ def game(width, height, speed, info):
                     if (1300 <= mouse_x <= 1300 + iconeQuitter.get_width()and 20 <= mouse_y <= 20 + iconeQuitter.get_height()):
                         running = False
                     elif (1230 <= mouse_x <= 1230 + iconeStop.get_width()and 23 <= mouse_y <= 23 + iconeStop.get_height()):
-                        Save.save(info, nbr_tour)
+                        Save.save(rule_choice,plate,rows,cols,mode, nbr_tour)
                     elif (1150 <= mouse_x <= 1150 + iconePause1.get_width()and 20 <= mouse_y <= 20 + iconePause1.get_height()):
                         if not pause:
                             screen.blit(iconePause2, (1150, 20))
