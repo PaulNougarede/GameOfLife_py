@@ -197,7 +197,7 @@ def menu(screen):
                 time.sleep(0.1)
                 taille = choix_taille(screen)
                 time.sleep(0.1)
-                if(taille[0] < 500):
+                if(taille[0] < 250):
                     mode = choix_mode(screen)
                 else:
                     mode = 1
@@ -215,6 +215,7 @@ def menu(screen):
 
                 rules_choice = tuple_info[0]
                 plate = tuple_info[1]
+                print(plate)
                 nbr_tour = tuple_info[2]
                 rows = tuple_info[3]
                 cols = tuple_info[4]
@@ -232,8 +233,8 @@ def choix_taille(screen):
     ROUGE = (255, 0, 0)
 
     # Variables
-    valeur_variable = 10
-    valeur_min = 10
+    valeur_variable = 50
+    valeur_min = 50
     valeur_max = 1000
     running = True
 
@@ -270,7 +271,7 @@ def choix_taille(screen):
         screen.fill(vert)
 
         # Dessin du curseur
-        pygame.draw.rect(screen, BLANC, (width // 2 - 140, height // 2 - 20, 240, 40))
+        pygame.draw.rect(screen, BLANC, (width // 2 - 130, height // 2 - 20, 240, 40))
         pygame.draw.rect(screen, ROUGE, (width // 2 - 140 + int(valeur_variable / (valeur_max - valeur_min) * 200), height // 2 - 20, 40, 40))
 
         # Affichage de la valeur de la variable

@@ -2,15 +2,15 @@ import numpy as np
 from pygame.locals import *
 
 
-def save(info, nbr_tour):
+def save(rule_choice,plate,rows,cols,mode, nbr_tour):
     with open("Sauvegarde/matrice.npy","wb") as f:
-        np.save(f, info[1]) #plate[]
+        np.save(f, plate) #plate[]
     with open("Sauvegarde/configuration.txt", "w") as file1 :
-        file1.write(str(info[0])+"\n") # rules_choice
+        file1.write(str(rule_choice)+"\n") # rules_choice
         file1.write(str(nbr_tour)+"\n") # nbr_tour
-        file1.write(str(info[3])+"\n") # rows
-        file1.write(str(info[4])+"\n") # cols
-        file1.write(str(info[5])+"\n") # mode
+        file1.write(str(rows)+"\n") # rows
+        file1.write(str(cols)+"\n") # cols
+        file1.write(str(mode)+"\n") # mode
         file1.close()
         
 def charge_plate():
