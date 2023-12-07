@@ -192,7 +192,7 @@ def menu(screen):
                 bord_nvlPartie = pygame.draw.rect(screen, blanc, (440, 360, 530, 80), 7, 5)
                 draw_text("Nouvelle partie", pygame.font.SysFont("Futura", 75), blanc, 500, 375, screen)
                 pygame.display.flip()
-                time.sleep(0.1)
+                time.sleep(0.2)
                 rules = choixDesRegles(screen)
                 time.sleep(0.1)
                 taille = choix_taille(screen)
