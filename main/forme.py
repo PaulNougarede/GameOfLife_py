@@ -1,6 +1,11 @@
 #---------------------------------- FORMES STABLES -----------------------------------------
 
-# A Z E
+# A : carré ,  Z : planner ,  E : Cannon à planner
+
+#Function d'affochage de formes :
+#   -On récupère en paramètre les coordonnées de la souris pour savoir ou placer la forme
+#   -On applique le calcul pour rédupérer les indices du tableau de la cellule depuis les coordonnées de la souris
+#   -On rend vivante les cellules selon la forme voulut
 
 def square(plate, clickX , clickY, cell_width, cell_height, scale, offsetX, offsetY ) :
 

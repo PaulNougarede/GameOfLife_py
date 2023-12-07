@@ -177,9 +177,11 @@ def game(width, height, speed, info):
         testZ = False
         testE = False
 
+        #Boucle des évenements Pygame :
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
+            #Si une touche du clavier est appuyée :
             if event.type == pygame.KEYDOWN:
                 isClicked = event.key
                 if isClicked == pygame.K_LEFT:
@@ -191,19 +193,27 @@ def game(width, height, speed, info):
                 if isClicked == pygame.K_DOWN:
                     offsetY += 10
                 if isClicked == pygame.K_a:
+                    #Si la touche "a" est cliqué : on récupère les coordonées de la souris et on y place une forme grâce à la fonction appelée
                     mouse_x, mouse_y = pygame.mouse.get_pos()
                     Forme.square(plate, mouse_x , mouse_y, cell_width, cell_height, scale, offsetX, offsetY)
                 if isClicked == pygame.K_z:
+                    #Si la touche "z" est cliqué : on récupère les coordonées de la souris et on y place une forme grâce à la fonction appelée
                     mouse_x, mouse_y = pygame.mouse.get_pos()
                     Forme.planner(plate, mouse_x , mouse_y, cell_width, cell_height, scale, offsetX, offsetY)
                 if isClicked == pygame.K_e:
+                    #Si la touche "a" est cliqué : on récupère les coordonées de la souris et on y place une forme grâce à la fonction appelée
                     mouse_x, mouse_y = pygame.mouse.get_pos()
                     Forme.canon(plate, mouse_x , mouse_y, cell_width, cell_height, scale, offsetX, offsetY)
                 if isClicked == pygame.K_c:
+                    #Si la touche "c" est cliqué : on réinitialise notre tableau de cellules à 0 (elles meurent toute)
                     plate = np.zeros((rows, cols), dtype=int)
+            #Si on clique avec la souris
             if event.type == pygame.MOUSEBUTTONDOWN:
+                #Clique droit :
                 if event.button == 1:
+                    #On récupère les coordonnées de la souris :
                     mouse_x, mouse_y = pygame.mouse.get_pos()
+                    #Gestion des cliques des actions (pause, vitesse ...) selon les postions : 
                     if (1300 <= mouse_x <= 1300 + iconeQuitter.get_width()and 20 <= mouse_y <= 20 + iconeQuitter.get_height()):
                         running = False
                     elif (1230 <= mouse_x <= 1230 + iconeStop.get_width()and 23 <= mouse_y <= 23 + iconeStop.get_height()):
@@ -221,30 +231,35 @@ def game(width, height, speed, info):
                     elif (1300 <= mouse_x <= 1300 + iconeVitessePlus.get_width() and 660 <= mouse_y <= 660 + iconeVitessePlus.get_height()):
                         speed +=1
                     else:
+                        #Lorsqu'on clique sur une cellule morte : elle devient vivante
                         click.cliqueCase(plate, mouse_x, mouse_y, cell_width, cell_height, scale, offsetX, offsetY)
-                elif event.button == 4:  # Molette vers le haut (zoom in)
+                #Gestion des évenements de la molette souris, vers le haut : zoom
+                elif event.button == 4:  
                     old_scale = scale
                     scale += 1
-                    # Ajustez l'offset pour zoomer à l'endroit où se trouve la souris
+                    #Ajustement de l'offset pour zoomer à l'endroit où se trouve la souris
                     offsetX -= (pygame.mouse.get_pos()[0] - offsetX) * (scale / old_scale - 1)
                     offsetY -= (pygame.mouse.get_pos()[1] - offsetY) * (scale / old_scale - 1)
-                elif event.button == 5:  # Molette vers le bas (zoom out)
+                #Gestion des évenements de la molette souris, vers le bas : dezoom
+                elif event.button == 5:  
                     if scale - 1 > 0:
                         old_scale = scale
                         scale -= 1
-                        # Ajustez l'offset pour zoomer à l'endroit où se trouve la souris
+                        #Ajustement de l'offset pour dezoomer à l'endroit où se trouve la souris
                         offsetX -= (pygame.mouse.get_pos()[0] - offsetX) * (scale / old_scale - 1)
                         offsetY -= (pygame.mouse.get_pos()[1] - offsetY) * (scale / old_scale - 1)
 
-
+        #Affichage, écriture et mise à jour de l'écran :
         displayPlate(plate)
         drawPlate(screen, alives, dead, nbr_tour)
         pygame.display.flip()
 
+        #Si le jeu n'est pas en pause : 
         if not pause:
             nbr_tour += 1
             new_plate = plate.copy()
             start = time.process_time()
+            #Boucle nous permettant de commpter le nombre de celules vivantes voisines
             for row in range(rows):
                 for col in range(cols):
                     count = (
@@ -257,17 +272,18 @@ def game(width, height, speed, info):
                         + get_cell(row + 1, col)
                         + get_cell(row + 1, col + 1)
                     )
+                    #Si une cellule est vivante :
                     if plate[row, col] == 1:
-                        count_alive += 1
-                        if count < 2 or count > 3:
-                            count_dead +=1
-                            new_plate[row, col] = 0
+                        count_alive += 1            #Variable qui contient le nombre de cellule total vivante
+                        if count < 2 or count > 3:  #Si une cellule à plus de 3 voisins ou moins de >2 voisins elle meurt
+                            count_dead +=1          #Variable qui contient le nombre de cellule total morte
+                            new_plate[row, col] = 0 #On tue la cellule
                     else:
-                        if rule_choice == 1 :
-                            if count == 3:
+                        if rule_choice == 1 :       #Si on suit la règle 2 :
+                            if count == 3:          #Si une cellule à exactement 3 voisins elle naît :
                                 new_plate[row, col] = 1
                         else :
-                            if count == 1:
+                            if count == 1:          #Si une cellule à exactement 1 voisins elle meurt :
                                 new_plate[row, col] = 1
             end = time.process_time()
 
