@@ -3,25 +3,25 @@ from pygame.locals import *
 import save as Save
 import graphs.graphAlive as Graph
 
-def draw_text(text, font, color, x, y, screen):
+def draw_text(text, font, color, x, y, screen): # fonction pour écrire du texte
         img = font.render(text, True, color)
-        screen.blit(img, (x, y))
+        screen.blit(img, (x, y)) # affichage
 
 def principeDuJeu(screen):
     
-    vert = (0, 122, 123) #définition couleur verte du jeu
+    vert = (0, 122, 123) #définition couleurs du jeu
     blanc = (255, 255, 255)
 
     screen.fill(vert)  #couleur fond
     iconeRetour = pygame.image.load("main/images/icone_fleche_arriere.png").convert_alpha()  # icone fleche retour
     iconeRetour = pygame.transform.scale(iconeRetour, (150, 150))  # mise à l'échelle
-    screen.blit(iconeRetour, (50, 50))
+    screen.blit(iconeRetour, (50, 50)) #affichage à 50,50
 
     iconeQuitter = pygame.image.load("main/images/icone_quitter.png").convert_alpha() #icone quitter le jeu
     iconeQuitter = pygame.transform.scale(iconeQuitter, (50, 50)) #mise à l'échelle
-    screen.blit(iconeQuitter, (1330, 20))
+    screen.blit(iconeQuitter, (1330, 20)) #affichage à 1330,20
     
-    pygame.display.flip()
+    pygame.display.flip() #affichage
 
     running = True
 
@@ -29,14 +29,14 @@ def principeDuJeu(screen):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:  # si la croix est cliquée
                 running = False
-                pygame.quit()
+                pygame.quit() # fermeture de la fenetre
                 sys.exit()
             if event.type == KEYDOWN:  # si on appuie sur une touche
                 if event.key == K_ESCAPE:  # si c'est la touch echap
                     pygame.quit()
                     sys.exit()
-
-        draw_text("Principe du jeu:", pygame.font.SysFont("Futura", 80), blanc, 500, 150,screen)
+                    
+        draw_text("Principe du jeu:", pygame.font.SysFont("Futura", 80), blanc, 500, 150,screen) #ecriture des textes
         draw_text("Le Jeu de la Vie est un automate cellulaire inventé par le mathématicien John Conway en 1970.", pygame.font.SysFont("Futura", 40), blanc, 50, 300,screen)
         draw_text("Il se déroule sur une grille bidimensionnelle infinie, où chaque cellule peut être vivante ou morte.", pygame.font.SysFont("Futura", 40), blanc, 50, 350,screen)
         draw_text("L'évolution des cellules est régie par des règles simples basées sur le nombre de voisins vivants", pygame.font.SysFont("Futura", 40), blanc, 50, 400,screen)
@@ -115,7 +115,7 @@ def choixDesRegles(screen):
                 draw_text("- Plus de 3 cellules autour : mort de surpopulation ", pygame.font.SysFont("Futura", 30), blanc, 70, 350,screen)
                 draw_text("- 3 cellules autour de toi : naissance par invocation ", pygame.font.SysFont("Futura", 30), blanc, 70, 380,screen)
                 pygame.display.flip()
-                time.sleep(0.05)
+                time.sleep(0.05) # pour ne pas que le bouton soit cliqué plusieurs fois
                 return 1
 
         if bouton_regles2.collidepoint(pygame.mouse.get_pos()):  # si souris sur le bouton
@@ -128,7 +128,7 @@ def choixDesRegles(screen):
                 draw_text("- Plus de 3 cellules autour : mort de surpopulation", pygame.font.SysFont("Futura", 30), blanc, 70, 600,screen)
                 draw_text("- 1 cellules autour de toi : naissance par invocation", pygame.font.SysFont("Futura", 30), blanc, 70, 630,screen)
                 pygame.display.flip()
-                time.sleep(0.05)
+                time.sleep(0.05) # pour ne pas que le bouton soit cliqué plusieurs fois
                 return 2
 
 
@@ -154,8 +154,6 @@ def menu(screen):
                     sys.exit()
                     
         screen.fill(vert)
-        
-        
         screen.blit(iconeQuitter, (1330, 20))
         
         bouton_principeDuJeu = pygame.draw.rect(screen, blanc, (430, 150, 550, 100), 0, 5)  # affichage bouton
@@ -183,7 +181,7 @@ def menu(screen):
                 bord_principeDuJeu = pygame.draw.rect(screen, blanc, (440, 160, 530, 80), 7, 5)
                 draw_text("Principe du jeu", pygame.font.SysFont("Futura", 75), blanc, 505, 175, screen)
                 pygame.display.flip()
-                time.sleep(0.1)
+                time.sleep(0.1) # pour ne pas que le bouton soit cliqué plusieurs fois
                 principeDuJeu(screen)
 
         if bouton_nvlPartie.collidepoint(pygame.mouse.get_pos()):  # si souris sur le bouton
@@ -192,26 +190,26 @@ def menu(screen):
                 bord_nvlPartie = pygame.draw.rect(screen, blanc, (440, 360, 530, 80), 7, 5)
                 draw_text("Nouvelle partie", pygame.font.SysFont("Futura", 75), blanc, 500, 375, screen)
                 pygame.display.flip()
-                time.sleep(0.2)
-                rules = choixDesRegles(screen)
+                time.sleep(0.2) # pour ne pas que le bouton soit cliqué plusieurs fois
+                rules = choixDesRegles(screen) #récupère le choix des règles
                 time.sleep(0.1)
-                taille = choix_taille(screen)
+                taille = choix_taille(screen) #récupère la taille du plateau
                 time.sleep(0.1)
                 if(taille[0] < 250):
-                    mode = choix_mode(screen)
+                    mode = choix_mode(screen) #récupère le mode de jeu
                 else:
-                    mode = 1
+                    mode = 1 #mode simulation
                 if rules != 0:
                     return (rules, plate, 0, taille[0], taille[1], mode) #taille[0] = rows / taille[1] = cols
                 
         if bouton_ChargerPartie.collidepoint(pygame.mouse.get_pos()): # si souris sur le bouton
-            if pygame.mouse.get_pressed()[0]: #si clc
+            if pygame.mouse.get_pressed()[0]: #si clic
                 bouton_ChargerPartie = pygame.draw.rect(screen, vert, (430,550,550,100), 0, 5)
                 bord_ChargerPartie = pygame.draw.rect(screen, blanc, (440, 560, 530, 80), 7, 5)
                 draw_text("Charger une partie", pygame.font.SysFont("Futura", 75), blanc, 465, 575, screen)
                 pygame.display.flip()
-                time.sleep(0.2)
-                tuple_info = Save.charge_plate()
+                time.sleep(0.2) # pour ne pas que le bouton soit cliqué plusieurs fois
+                tuple_info = Save.charge_plate() #récupère les infos de la partie sauvegardée
 
                 rules_choice = tuple_info[0]
                 plate = tuple_info[1]
@@ -228,17 +226,17 @@ def choix_taille(screen):
 
     width, height = 1400, 800
 
-    # Couleurs
+    #couleurs
     BLANC = (255, 255, 255)
     ROUGE = (255, 0, 0)
 
-    # Variables
+    #variables
     valeur_variable = 50
     valeur_min = 50
     valeur_max = 1000
     running = True
 
-    # Chargement de la police
+    #chargement de la police
     pygame.font.init()
     police = pygame.font.SysFont("Futura", 24)
 
@@ -256,51 +254,44 @@ def choix_taille(screen):
                     sys.exit()
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if width // 2 - 140 <= event.pos[0] <= width // 2 + 100 and height // 2 - 20 <= event.pos[1] <= height // 2 + 20:
-                    # Si le clic est dans la zone du curseur
+                    #si clic dans zone du curseur
                     curseur_enfonce = True
             elif event.type == pygame.MOUSEBUTTONUP:
                 curseur_enfonce = False
         
-        # Mise à jour de la valeur de la variable en fonction de la position du curseur
-        if curseur_enfonce:
+        if curseur_enfonce: #MAJ valeur variable en fonction de la position du curseur
             x_souris, _ = pygame.mouse.get_pos()
             valeur_variable = int((x_souris - (width // 2 - 100)) / 200 * (valeur_max - valeur_min))
             valeur_variable = max(valeur_min, min(valeur_max, valeur_variable))
 
-        # Effacement de l'écran
         screen.fill(vert)
 
-        # Dessin du curseur
-        pygame.draw.rect(screen, BLANC, (width // 2 - 130, height // 2 - 20, 240, 40))
+        pygame.draw.rect(screen, BLANC, (width // 2 - 130, height // 2 - 20, 240, 40)) #affichage curseur
         pygame.draw.rect(screen, ROUGE, (width // 2 - 140 + int(valeur_variable / (valeur_max - valeur_min) * 200), height // 2 - 20, 40, 40))
 
-        # Affichage de la valeur de la variable
         texte = police.render(str(valeur_variable)+"x"+str(valeur_variable), True, BLANC)
-        texte_rect = texte.get_rect(center=(width // 2-20, height // 2 + 40))
+        texte_rect = texte.get_rect(center=(width // 2-20, height // 2 + 40)) #affichage valeur de la variable
 
-        #Affichage du message de choix
-        draw_text("Choisissez la taille du plateau", pygame.font.SysFont("Futura", 60), BLANC, 400, 200, screen)
+        draw_text("Choisissez la taille du plateau", pygame.font.SysFont("Futura", 60), BLANC, 400, 200, screen) #affichage choix taille plateau
 
-        #Affichage bouton
-        bouton_entree = pygame.draw.rect(screen, BLANC, (586, 525, 190, 70), 0, 5)  
+        bouton_entree = pygame.draw.rect(screen, BLANC, (586, 525, 190, 70), 0, 5) #affichage bouton
         bord_entree = pygame.draw.rect(screen, vert, (591, 530, 180, 60), 5, 5)
         draw_text("Valider", pygame.font.SysFont("Futura", 60), vert, 606, 545, screen)
 
         screen.blit(texte, texte_rect)
-
         pygame.display.flip()
 
         if bouton_entree.collidepoint(pygame.mouse.get_pos()): # si souris sur le bouton
-            if pygame.mouse.get_pressed()[0]: #si clc
+            if pygame.mouse.get_pressed()[0]: #si clic
                 bouton_entree = pygame.draw.rect(screen, vert, (586,525,190,70), 0, 5)
                 bord_entree = pygame.draw.rect(screen, BLANC, (591, 530, 180, 60), 7, 5)
                 draw_text("Valider", pygame.font.SysFont("Futura", 60), BLANC, 606, 545, screen)
                 pygame.display.flip()
-                time.sleep(0.2)
-                return (valeur_variable, valeur_variable)
+                time.sleep(0.2) # pour ne pas que le bouton soit cliqué plusieurs fois
+                return (valeur_variable, valeur_variable) 
             
             
-def choix_mode(screen):
+def choix_mode(screen): #choix du mode de jeu
     running = True
     
     vert = (0, 122, 123)
@@ -335,8 +326,8 @@ def choix_mode(screen):
                 bord_alea = pygame.draw.rect(screen, blanc, (110, 360, 480, 80), 7, 5)
                 draw_text("Aléatoire",pygame.font.SysFont("Futura", 80),blanc,220,375,screen)
                 pygame.display.flip()
-                time.sleep(0.2)
-                return (1)
+                time.sleep(0.2) # pour ne pas que le bouton soit cliqué plusieurs fois
+                return (1) #mode aléatoire
 
         if bouton_manu.collidepoint(pygame.mouse.get_pos()):  # si souris sur le bouton
             if pygame.mouse.get_pressed()[0]:  # si clic
@@ -345,7 +336,7 @@ def choix_mode(screen):
                 draw_text("Manuel",pygame.font.SysFont("Futura", 80),blanc,940,375,screen)
                 pygame.display.flip()
                 time.sleep(0.2)
-                return(2)
+                return(2) #mode manuel
             
 def menu_graphs(screen, graphData):
 
@@ -367,7 +358,6 @@ def menu_graphs(screen, graphData):
                     pygame.quit()
                     sys.exit()
                     
-        
         screen.blit(iconeQuitter, (1330, 20))
 
         bouton_vivante = pygame.draw.rect(screen, blanc, (50, 350, 350, 160))  # affichage bouton
@@ -404,7 +394,7 @@ def menu_graphs(screen, graphData):
                 draw_text("vivantes", pygame.font.SysFont("Futura", 80), blanc, 110, 425, screen)
                 pygame.display.flip()
                 time.sleep(0.1)
-                Graph.graph_alive(graphData[0])
+                Graph.graph_alive(graphData[0]) #affichage du graphe cellules vivantes
                 
 
         if bouton_morte.collidepoint(pygame.mouse.get_pos()):  # si souris sur le bouton
@@ -415,7 +405,7 @@ def menu_graphs(screen, graphData):
                 draw_text("mortes", pygame.font.SysFont("Futura", 80), blanc, 585, 425, screen)
                 pygame.display.flip()
                 time.sleep(0.1)
-                Graph.graph_death(graphData[2])
+                Graph.graph_death(graphData[2]) #affichage du graphe cellules mortes
                 
         if bouton_calcul.collidepoint(pygame.mouse.get_pos()): # si souris sur le bouton
             if pygame.mouse.get_pressed()[0]: #si clic
@@ -425,4 +415,4 @@ def menu_graphs(screen, graphData):
                 draw_text("de calcul", pygame.font.SysFont("Futura", 80), blanc, 1005, 425, screen)
                 pygame.display.flip()
                 time.sleep(0.1)
-                Graph.graph_calcul(graphData[1])
+                Graph.graph_calcul(graphData[1]) #affichage du graphe temps de calcul
