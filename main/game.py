@@ -166,9 +166,7 @@ def game(width, height, speed, info):
     running = True
     clock = pygame.time.Clock()
     pause = False
-
-
-
+    
     while running:
         
         count_alive = 0
@@ -230,6 +228,19 @@ def game(width, height, speed, info):
                             speed -= 1
                     elif (1300 <= mouse_x <= 1300 + iconeVitessePlus.get_width() and 660 <= mouse_y <= 660 + iconeVitessePlus.get_height()):
                         speed +=1
+                    elif (1145 <= mouse_x <= 1145 + iconeZoomAvant.get_width() and 660 <= mouse_y <= 660 + iconeZoomAvant.get_height()):
+                        #zoom au centre de l'écran
+                        old_scale = scale
+                        scale += 1
+                        offsetX -= (rows - offsetX) * (scale / old_scale - 1)
+                        offsetY -= (cols - offsetY) * (scale / old_scale - 1)
+                    elif (1145 <= mouse_x <= 1145 + iconeZoomArriere.get_width() and 720 <= mouse_y <= 720 + iconeZoomArriere.get_height()):
+                        if scale - 1 > 0:
+                            old_scale = scale
+                            scale -= 1
+                            #zoom au centre de l'écran
+                            offsetX -= (rows - offsetX) * (scale / old_scale - 1)
+                            offsetY -= (cols - offsetY) * (scale / old_scale - 1)
                     else:
                         #Lorsqu'on clique sur une cellule morte : elle devient vivante
                         click.cliqueCase(plate, mouse_x, mouse_y, cell_width, cell_height, scale, offsetX, offsetY)
