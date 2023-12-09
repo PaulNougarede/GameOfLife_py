@@ -213,7 +213,6 @@ def menu(screen):
 
                 rules_choice = tuple_info[0]
                 plate = tuple_info[1]
-                print(plate)
                 nbr_tour = tuple_info[2]
                 rows = tuple_info[3]
                 cols = tuple_info[4]
